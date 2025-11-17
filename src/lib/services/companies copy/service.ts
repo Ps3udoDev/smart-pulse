@@ -35,49 +35,35 @@ export async function deleteCompany(id: string): Promise<void> {
   if (error) throw error
 }
 
+// Función auxiliar para subir archivos a Supabase Storage
 export async function uploadCompanyFile(
   file: File,
   bucket: string = "company-assets",
-  folder: string = ""
+  path?: string
 ): Promise<string> {
   const sb = createClient()
-  
-  const timestamp = Date.now()
-  const randomStr = Math.random().toString(36).substring(2, 9)
-  const fileExt = file.name.split(".").pop()
-  const fileName = `${timestamp}-${randomStr}.${fileExt}`
-  
-  const filePath = folder ? `${folder}/${fileName}` : fileName
-  
-  const { data, error } = await sb.storage
-    .from(bucket)
-    .upload(filePath, file, {
-      cacheControl: "3600",
-      upsert: false,
-    })
-  
+  const fileName = `${Date.now()}-${file.name}`
+  const filePath = path ? `${path}/${fileName}` : fileName
+
+  const { data, error } = await sb.storage.from(bucket).upload(filePath, file, {
+    cacheControl: "3600",
+    upsert: false,
+  })
+
   if (error) throw error
-  
-  const { data: publicUrlData } = sb.storage
-    .from(bucket)
-    .getPublicUrl(data.path)
-  
+
+  // Obtener URL pública
+  const { data: publicUrlData } = sb.storage.from(bucket).getPublicUrl(data.path)
+
   return publicUrlData.publicUrl
 }
 
+// Función auxiliar para eliminar archivos de Supabase Storage
 export async function deleteCompanyFile(
-  fileUrl: string,
+  filePath: string,
   bucket: string = "company-assets"
 ): Promise<void> {
   const sb = createClient()
-  
-  const url = new URL(fileUrl)
-  const pathParts = url.pathname.split(`/storage/v1/object/public/${bucket}/`)
-  const filePath = pathParts[1]
-  
-  if (!filePath) throw new Error("Invalid file URL")
-  
   const { error } = await sb.storage.from(bucket).remove([filePath])
-  
   if (error) throw error
 }
