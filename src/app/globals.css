@@ -37,8 +37,8 @@
   --warning-foreground: 48 96% 10%;
   --info: 204 100% 50%;
   --info-foreground: 204 100% 10%;
-  --success: 142 71% 45%; /* Verde para success */
-  --success-foreground: 0 0% 100%; /* Blanco para texto */
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
 }
 
 @theme {
@@ -49,6 +49,16 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 }
 
 @layer base {
@@ -59,6 +69,24 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+  }
+
+  /* Forzar fondo sólido para componentes de shadcn que usan popover */
+  [data-radix-popper-content-wrapper],
+  [data-radix-select-content],
+  [data-radix-dialog-content] {
+    background-color: hsl(var(--popover)) !important;
+    color: hsl(var(--popover-foreground)) !important;
+  }
+
+  /* Forzar fondo sólido para opciones de Select */
+  [data-radix-select-viewport] {
+    background-color: hsl(var(--popover)) !important;
+  }
+
+  /* Forzar fondo sólido para toasts */
+  .toaster .group {
+    background-color: hsl(var(--popover)) !important;
   }
 }
 
@@ -127,18 +155,45 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: hsl(var(--border));
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 
-  .toaster .group {
+  
+  [data-radix-dialog-overlay] {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  [data-radix-dialog-content] {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    border: 1px solid hsl(var(--border));
+  }
+
+  [data-radix-select-content] {
+    background-color: hsl(var(--popover)) !important;
+    color: hsl(var(--popover-foreground)) !important;
+    border: 1px solid hsl(var(--border));
+  }
+
+  [data-radix-select-viewport] {
     background-color: hsl(var(--popover)) !important;
   }
 
-  .dark .toaster .group {
+  [data-radix-popper-content-wrapper] {
     background-color: hsl(var(--popover)) !important;
+  }
+
+  [data-radix-select-item] {
+    background-color: transparent;
+  }
+
+  [data-radix-select-item][data-highlighted] {
+    background-color: hsl(var(--accent)) !important;
+    color: hsl(var(--accent-foreground)) !important;
   }
 }

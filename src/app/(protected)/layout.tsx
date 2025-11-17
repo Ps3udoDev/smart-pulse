@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import { UserMenu } from "@/components/header/UserMenu"
 import { ProtectedNav } from "@/components/nav/ProtectedNav"
+import { SidebarBrand } from "@/components/header/SidebarBrand"
 
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const user = await getUser()
@@ -30,9 +31,9 @@ export default async function ProtectedLayout({ children }: { children: React.Re
       >
         <SidebarRail />
         <SidebarHeader>
-          <div className="flex items-center gap-2 px-2 py-1">
-            <Image src="/logo/smart-pulse.png" alt="Smart Pulse" width={180} height={28} />
-          </div>
+          <SidebarHeader>
+            <SidebarBrand />
+          </SidebarHeader>
         </SidebarHeader>
         <SidebarContent>
           <ProtectedNav />

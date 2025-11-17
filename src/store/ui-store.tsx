@@ -1,8 +1,10 @@
 'use client'
 import { create } from 'zustand'
+import { toast } from 'sonner'
 
 export type ConfirmOptions = {
     title?: string
+    body?: string
     description?: string
     confirmText?: string
     cancelText?: string
@@ -27,10 +29,18 @@ type UIState = {
 
 export const useUIStore = create<UIState>((set, get) => ({
     notify: {
-        success: () => { },
-        error: () => { },
-        warning: () => { },
-        info: () => { },
+        success: (msg: string, opts?: { description?: string }) => {
+            toast.success(msg, { description: opts?.description })
+        },
+        error: (msg: string, opts?: { description?: string }) => {
+            toast.error(msg, { description: opts?.description })
+        },
+        warning: (msg: string, opts?: { description?: string }) => {
+            toast.warning(msg, { description: opts?.description })
+        },
+        info: (msg: string, opts?: { description?: string }) => {
+            toast.info(msg, { description: opts?.description })
+        },
     },
 
     confirmOpen: false,
@@ -45,10 +55,15 @@ export const useUIStore = create<UIState>((set, get) => ({
 
     confirm: (opts) =>
         new Promise<boolean>((resolve) => {
-            set({ confirmOpen: true, confirmOpts: { ...get().confirmOpts, ...opts }, _resolver: resolve })
+            set({
+                confirmOpen: true,
+                confirmOpts: { ...get().confirmOpts, ...opts },
+                _resolver: resolve
+            })
         }),
 
     _setConfirmOpen: (open) => set({ confirmOpen: open }),
+
     _resolveConfirm: (value) => {
         const res = get()._resolver
         res?.(value)
