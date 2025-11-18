@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useMemo, useState } from "react"
-import type { Pillar } from "@/lib/types"
+import type { Pillars } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
@@ -19,8 +19,7 @@ export default function PillarsPage() {
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  // Filtrar pilares por búsqueda
-  const filteredPillars: Pillar[] = useMemo(() => {
+  const filteredPillars: Pillars[] = useMemo(() => {
     if (!searchQuery.trim()) return pillars
 
     const needle = searchQuery.trim().toLowerCase()
@@ -43,7 +42,7 @@ export default function PillarsPage() {
         name: values.name,
         code: values.code,
         description: values.description || null,
-      } as Partial<Pillar>)
+      } as Partial<Pillars>)
       notify.success("Pilar creado exitosamente")
       setDialogOpen(false)
     } catch (e: any) {

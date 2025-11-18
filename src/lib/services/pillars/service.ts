@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/client"
-import type { Pillar } from "@/lib/types"
+import type { Pillars } from "@/lib/types"
 
-export async function listPillars(): Promise<Pillar[]> {
+export async function listPillars(): Promise<Pillars[]> {
   const sb = createClient()
   const { data, error } = await sb
     .from("pillars")
@@ -11,7 +11,7 @@ export async function listPillars(): Promise<Pillar[]> {
   return data ?? []
 }
 
-export async function getPillar(id: string): Promise<Pillar | null> {
+export async function getPillar(id: string): Promise<Pillars | null> {
   const sb = createClient()
   const { data, error } = await sb
     .from("pillars")
@@ -22,7 +22,7 @@ export async function getPillar(id: string): Promise<Pillar | null> {
   return data ?? null
 }
 
-export async function createPillar(payload: Partial<Pillar>): Promise<Pillar> {
+export async function createPillar(payload: Partial<Pillars>): Promise<Pillars> {
   const sb = createClient()
   const { data, error } = await sb
     .from("pillars")
@@ -33,7 +33,7 @@ export async function createPillar(payload: Partial<Pillar>): Promise<Pillar> {
   return data!
 }
 
-export async function updatePillar(id: string, patch: Partial<Pillar>): Promise<Pillar> {
+export async function updatePillar(id: string, patch: Partial<Pillars>): Promise<Pillars> {
   const sb = createClient()
   const { data, error } = await sb
     .from("pillars")

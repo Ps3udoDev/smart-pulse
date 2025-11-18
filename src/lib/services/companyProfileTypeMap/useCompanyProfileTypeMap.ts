@@ -1,29 +1,41 @@
 "use client"
-import useSWR from "swr"
-import { listCompanyProfileTypeMaps, createCompanyProfileTypeMap, updateCompanyProfileTypeMap, deleteCompanyProfileTypeMap } from "./service"
-import type { CompanyProfileTypeMap } from "@/lib/types"
-import { useSWRConfig } from "swr"
 
-export function useCompanyProfileTypeMap() {
-  return useSWR<CompanyProfileTypeMap[]>("company_profile_type_map", listCompanyProfileTypeMaps)
+import useSWR from "swr"
+import { useSWRConfig } from "swr"
+import type { CompanyProfileTypeMap } from "@/lib/types"
+import {
+  listCompanyProfileTypeMaps,
+  upsertProfileTypeMapping,
+  setProfileTypeMappingEnabled,
+  deleteProfileTypeMapping,
+} from "./service"
+
+export function useCompanyProfileTypeMap(companyId: string | null) {
+  const key = companyId ? ["company_profile_type_map", companyId] : null
+  return useSWR<CompanyProfileTypeMap[]>(key, () => listCompanyProfileTypeMaps(companyId!))
 }
 
-export function useCompanyProfileTypeMapMutations() {
+export function useCompanyProfileTypeMapMutations(companyId: string | null) {
   const { mutate } = useSWRConfig()
+  const key = companyId ? ["company_profile_type_map", companyId] : null
+
   return {
-    async create(payload: Partial<CompanyProfileTypeMap>) {
-      const map = await createCompanyProfileTypeMap(payload)
-      await mutate("company_profile_type_map")
-      return map
+    async upsert(profileTypeId: string, enabled: boolean) {
+      if (!companyId) return
+      await upsertProfileTypeMapping(companyId, profileTypeId, enabled)
+      if (key) await mutate(key)
     },
-    async update(id: string, patch: Partial<CompanyProfileTypeMap>) {
-      const map = await updateCompanyProfileTypeMap(id, patch)
-      await mutate("company_profile_type_map")
-      return map
+
+    async setEnabled(profileTypeId: string, enabled: boolean) {
+      if (!companyId) return
+      await setProfileTypeMappingEnabled(companyId, profileTypeId, enabled)
+      if (key) await mutate(key)
     },
-    async remove(id: string) {
-      await deleteCompanyProfileTypeMap(id)
-      await mutate("company_profile_type_map")
+
+    async remove(profileTypeId: string) {
+      if (!companyId) return
+      await deleteProfileTypeMapping(companyId, profileTypeId)
+      if (key) await mutate(key)
     },
   }
 }

@@ -3,11 +3,11 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
-import { Pillar } from "@/lib/types"
+import { Pillars } from "@/lib/types"
 
 export function createColumns(actions: {
   onDeletePillar: (id: string, name: string) => void
-}): ColumnDef<Pillar>[] {
+}): ColumnDef<Pillars>[] {
   return [
     {
       accessorKey: "code",
