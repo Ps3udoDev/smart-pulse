@@ -71,22 +71,46 @@
     color: hsl(var(--foreground));
   }
 
-  /* Forzar fondo sólido para componentes de shadcn que usan popover */
-  [data-radix-popper-content-wrapper],
-  [data-radix-select-content],
-  [data-radix-dialog-content] {
-    background-color: hsl(var(--popover)) !important;
-    color: hsl(var(--popover-foreground)) !important;
+  /* Estilos para Dialog - Fondo sólido blanco/oscuro según tema */
+  [data-radix-dialog-overlay] {
+    background-color: rgba(0, 0, 0, 0.5) !important;
   }
 
-  /* Forzar fondo sólido para opciones de Select */
+  [data-radix-dialog-content] {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+  }
+
+  /* Estilos para Select */
+  [data-radix-select-content] {
+    background-color: hsl(var(--popover)) !important;
+    color: hsl(var(--popover-foreground)) !important;
+    border: 1px solid hsl(var(--border));
+  }
+
   [data-radix-select-viewport] {
     background-color: hsl(var(--popover)) !important;
   }
 
-  /* Forzar fondo sólido para toasts */
-  .toaster .group {
+  [data-radix-select-item] {
+    background-color: transparent;
+  }
+
+  [data-radix-select-item][data-highlighted] {
+    background-color: hsl(var(--accent)) !important;
+    color: hsl(var(--accent-foreground)) !important;
+  }
+
+  /* Estilos para Popovers */
+  [data-radix-popper-content-wrapper] {
     background-color: hsl(var(--popover)) !important;
+  }
+
+  /* Estilos para Toasts */
+  .toaster .group {
+    background-color: hsl(var(--card)) !important;
+    border: 1px solid hsl(var(--border));
   }
 }
 
@@ -151,49 +175,4 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-}
-
-@layer base {
-  * {
-    border-color: hsl(var(--border));
-  }
-
-  body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-  }
-
-  
-  [data-radix-dialog-overlay] {
-    background-color: rgba(0, 0, 0, 0.5) !important;
-  }
-
-  [data-radix-dialog-content] {
-    background-color: hsl(var(--card)) !important;
-    color: hsl(var(--card-foreground)) !important;
-    border: 1px solid hsl(var(--border));
-  }
-
-  [data-radix-select-content] {
-    background-color: hsl(var(--popover)) !important;
-    color: hsl(var(--popover-foreground)) !important;
-    border: 1px solid hsl(var(--border));
-  }
-
-  [data-radix-select-viewport] {
-    background-color: hsl(var(--popover)) !important;
-  }
-
-  [data-radix-popper-content-wrapper] {
-    background-color: hsl(var(--popover)) !important;
-  }
-
-  [data-radix-select-item] {
-    background-color: transparent;
-  }
-
-  [data-radix-select-item][data-highlighted] {
-    background-color: hsl(var(--accent)) !important;
-    color: hsl(var(--accent-foreground)) !important;
-  }
 }

@@ -58,7 +58,6 @@ export default function CompaniesPage() {
     }
   }
 
-  // Eliminar empresa
   async function handleDeleteCompany(id: string, name: string) {
     const ok = await confirm({
       title: "Eliminar empresa",
